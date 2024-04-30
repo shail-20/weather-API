@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>OpenWeatherMap Api</title>
+ 
+</head>
+<body>
+  <!-- <div class="main">
+    <div class="header">
+      <h1>OpenWeatherMap API</h1>
+      <p>Enter any city name in the input box below to get the data</p>
+    </div> -->
+  
+    <div class="input">
+      <input type="text" id="search" placeholder="Enter the city" class="input_text">
+      <input type="submit" value="Submit" class="submit">
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h1 class="name" id="name"></h1>
+      <p class="temp"></p>
+      <p class="clouds"></p>
+      <p class="desc"></p>
+    </div>
+  </div>
+<script>
+  var input = document.querySelector('.input_text');
+var main = document.querySelector('#name');
+var temp = document.querySelector('.temp');
+var desc = document.querySelector('.desc');
+var clouds = document.querySelector('.clouds');
+var button= document.querySelector('.submit');
+
+
+button.addEventListener('click', function(name){
+fetch('https://api.openweathermap.org/data/2.5/weather?q='+input.value+'&appid=7dbc740792877d401aecfde16d5e0e88')
+.then(response => response.json())
+.then(data => {
+  var tempValue = data['main']['temp'];
+  var celsius = Math.floor(tempValue - 273.15);
+  var nameValue = data['name'];
+  var descValue = data['weather'][0]['description'];
+
+  main.innerHTML = nameValue;
+  desc.innerHTML = "Desc - "+descValue;
+  temp.innerHTML = "Temp - "+celsius+"°C";
+  input.value ="";
+
+})
+
+.catch(err => alert("Wrong city name!"));
+})
+ // converting kelvin to celcius
+ 
+function ktoc(K){
+   return (temp - 273.15);
+}
+
+ input.addEventListener('sumbit', (e) => {
+ e.preventDefault();
+
+  const city = search.value;
+
+  if(city){
+    getWeatherByLocation(city)
+  }
+
+ });
+
+
+</script>
+
+<style>
+  *{
+  margin:0;
+  padding: 0;
+  box-sizing: border-box;
+
+}
+
+body{
+  font-family: "Nunito",sans-serif;
+  background-image: url(https://cdn.dribbble.com/users/925716/screenshots/3333720/attachments/722375/night.png?compress=1&resize=400x300&vertical=top);
+}
+
+.input{
+  text-align: center;
+  margin: 100px auto;
+  
+}
+
+input[type="submit"]{
+  padding: 15px 30px;
+  background: #e7e7e7;
+  border: none;
+  border-radius: 10px;
+  font-family: "Nunito",sans-serif;
+  font-weight:bold;
+  font-size: 20px;
+  box-shadow: 0 4px 8px 0 rgb(226, 29, 197), 0 6px 20px 0 rgb(226, 29, 197);
+  margin-left: 10px;
+}
+
+.input input[type="text"]{
+  width: 600px;
+  height: 55px;
+  padding: 5px 10px;
+  background: #e7e7e7;
+  border: none;
+  border-radius: 1px;
+  font-family: "Nunito",sans-serif;
+  font-weight:bold;
+  font-size: 20px;
+  
+}
+
+.card{
+  width: 50%;
+  background: #e7e7e7;
+  height: 40vh;
+  margin: 50px auto;
+  border-radius: 40px;
+  box-shadow: 0 4px 8px 0 rgb(226, 29, 197), 0 6px 20px 0 rgb(226, 29, 197);
+  opacity: 0.5;
+  
+}
+
+
+.close{
+  float: right;
+  margin-top: -2px;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.card h1{
+  padding: 5px 0;
+  text-align: center;
+}
+
+.card p{
+  text-align: center;
+  margin:40px 0;
+  font-size:20px;
+}
+#search{
+  border-radius: 40px;
+  box-shadow: 0 4px 8px 0 rgb(226, 29, 197), 0 6px 20px 0 rgb(226, 29, 197);
+}
+</style>
+</body>
+</html>
